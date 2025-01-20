@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Simple Expression Generator</title>
+    <link rel="icon" type="image/png" href="favicon.png" />
+
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div class="container mt-5 w-50">
+      <div
+        class="d-flex justify-content-between flex-column gap-3 align-items-center text-center"
+      >
+        <!-- First Number Input -->
+        <div class="text-start">
+          <label for="inputBox">Enter a Number here</label>
+          <input
+            type="number"
+            class="form-control vw-25"
+            placeholder="Enter a Number.."
+            id="inputBox"
+          />
+        </div>
+
+        <!-- Second Number Input -->
+        <div class="text-start">
+          <label for="operationBox"
+            >Enter Number of Operations to perform</label
+          >
+
+          <input
+            type="number"
+            class="form-control me-2 vw-25"
+            placeholder="Enter Number of Operations.."
+            id="operationBox"
+          />
+        </div>
+
+        <!-- Button -->
+        <button
+          type="button"
+          class="btn btn-primary"
+          id="inputButton"
+          class="buttons"
+        >
+          Get Expression!
+        </button>
+        <div id="outputBox" class="mt-5">
+          Your answer output will appear here
+        </div>
+        <button class="btn btn-primary mt-3" id="copyButton" class="buttons">
+          Copy your output
+        </button>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <script type="module">
+      import { createLongEquation } from "./simpleAdditionSubtraction.js";
+      const copyButton = document.getElementById("copyButton");
+      const outputBox = document.getElementById("outputBox");
+      const inputButton = document.querySelector("#inputButton");
+      const inputBox = document.querySelector("#inputBox");
+      const operationBox = document.querySelector("#operationBox");
+      let num;
+      let ope;
+      // console.log(inputBox.innerText);
+      //   console.log(inputBox);
+      inputButton.addEventListener("click", () => {
+        copyButton.innerText = "Copy your output";
+        copyButton.setAttribute("class", "btn btn-primary mt-3");
+        if (inputBox.value === "") {
+          alert("Please enter a number first");
+        } else if (operationBox.value === "") {
+          alert("Please enter number of operations to perform");
+        } else {
+          num = Number(inputBox.value);
+          ope = Number(operationBox.value);
+          const res = createLongEquation(num, ope);
+          let formattedEquation = "";
+          let lineLength = 0;
+          for (let part of res.split("+")) {
+            if (lineLength + part.length > 100) {
+              formattedEquation += "";
+              lineLength = 0;
+            }
+            formattedEquation += part + "+";
+            lineLength += part.length + 1;
+          }
+          formattedEquation = formattedEquation.slice(0, -1);
+          // console.log(typeof num);
+          outputBox.innerText = "";
+          outputBox.innerText = formattedEquation;
+        }
+      });
+
+      copyButton.addEventListener("click", () => {
+        if (inputBox.value === "") {
+          alert("Please enter a number first");
+        } else if (operationBox.value === "") {
+          alert("Please enter number of operations to perform");
+        } else if (
+          outputBox.innerText === "Your answer output will appear here"
+        ) {
+          alert("Please click on get Get Expression! button first");
+        } else {
+          const text = outputBox.innerText; // Get text content
+          navigator.clipboard
+            .writeText(text)
+            .then(() => {
+              copyButton.innerText = "Copied";
+              copyButton.setAttribute("class", "btn btn-success mt-3");
+            })
+            .catch((err) => {
+              console.error("Failed to copy text: ", err);
+            });
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "counting-numbers",
+  "version": "1.0.0",
+  "description": "A program for generating long expressions of any number for the discord counting bot",
+  "main": "simpleAdditionSubtraction.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Onkar",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^5.3.3"
+  }
+}
